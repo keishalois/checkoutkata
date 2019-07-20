@@ -17,9 +17,5 @@ public class Offer {
         return priceInPence;
     }
 
-
-//    public int applyOfferToCheckout(Basket basket) {
-//        return 0;
-//        }
     }
 

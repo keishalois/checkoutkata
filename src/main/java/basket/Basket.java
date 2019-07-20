@@ -1,7 +1,6 @@
 package basket;
 
 import sku.Sku;
-
 import java.util.HashMap;
 
 public class Basket {
@@ -16,11 +15,12 @@ public class Basket {
         return basketOfItems;
     }
 
-//add sku to basket
     public void addToBasket(Sku sku) {
         if (basketOfItems.containsKey(sku)) {
             basketOfItems.put(sku, basketOfItems.get(sku) + 1);
-        } else {basketOfItems.put(sku, 1); }
+        } else {
+            basketOfItems.put(sku, 1);
+        }
     }
 
     public int getQuantityInBasket(Sku sku) {
@@ -30,8 +30,4 @@ public class Basket {
         return 0;
     }
 
-    //loop through all items in basket
-    // get number of items in basket
-    // cancel basket
-    //remove sku from basket
 }
