@@ -63,6 +63,7 @@ public class CheckoutService {
                 int quantity = basket.getBasketOfItems().get(sku);
                 int cost = quantity * sku.getPrice();
                 totalPrice += cost;
+                
             }
         }
 
