@@ -1,0 +1,10 @@
+management:
+  port: 8080
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /
+
+
+username: fred
