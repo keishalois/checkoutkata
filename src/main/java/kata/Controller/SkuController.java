@@ -27,12 +27,21 @@ public class SkuController {
         }
     }
 
-    @PostMapping("/{skuid}")
-    public void newsku(@RequestBody String name, @RequestBody Sku newSku) {
-        itemRepo.getAllSkus().put(name, newSku);
+    @PostMapping("/post/{skuname}/{skuprice}")
+    public ItemRepo addNewSku(@PathVariable String skuname, @PathVariable int skuprice) {
+        Sku newSku = new Sku(skuname, skuprice);
+        String skuid = skuname;
+        itemRepo.getAllSkus().put(skuid, newSku);
+        return itemRepo;
     }
 
+    @GetMapping("/ping")
+    public String ping(){
+        return "pong";
     }
+}
+
+
 
 
 
