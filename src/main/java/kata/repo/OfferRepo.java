@@ -18,5 +18,10 @@ public class OfferRepo {
     public HashMap<String, Offer> getOffers() {
         return offers;
     }
+
+    public Offer getOffer(String name) {
+        return offers.get(name);
     }
+
+}
 

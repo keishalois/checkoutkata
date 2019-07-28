@@ -1,8 +1,17 @@
 package kata.basket;
 
+import kata.repo.OfferRepo;
 import kata.sku.Sku;
 import org.junit.Assert;
 import org.junit.Test;
+
+
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
 
 public class BasketTest {
 
@@ -10,9 +19,9 @@ public class BasketTest {
     public void addSingleItemToBasketShouldReturnSingleItem() {
         final Sku apple = new Sku("apple",10);
 
-        Basket basket1 = new Basket();
-        basket1.addToBasket(apple);
-        Assert.assertEquals(Integer.valueOf(1), basket1.getBasketOfItems().get(apple));
+        Basket basketMock = new Basket();
+        basketMock.addToBasket(apple);
+        Assert.assertEquals(Integer.valueOf(1), basketMock.getBasketOfItems().get(apple));
     }
 
     @Test
