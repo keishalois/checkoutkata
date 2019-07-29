@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.Set;
 
 @Lazy
 @Component
@@ -33,6 +34,16 @@ public class Basket {
             return basketOfItems.get(sku);
         }
         return 0;
+    }
+
+    public Set<Sku> showBasket(){
+        Set<Sku> skus = getBasketOfItems().keySet();
+        for (Sku sku : skus) {
+            System.out.println("Item : " + sku.getNameOfProduct());
+            System.out.println("Normal Price : "  + sku.getPrice());
+            System.out.println("Quantity in basket : " + getQuantityInBasket(sku));
+        }
+        return skus;
     }
 
 }

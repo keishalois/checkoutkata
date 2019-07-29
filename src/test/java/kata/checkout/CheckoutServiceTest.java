@@ -33,6 +33,7 @@ public class CheckoutServiceTest {
 
     @Test
     public void calcCostOfItemCheckoutShouldReturnIntOfMixOfOffersAndNonOffersTotal() {
+        //Arrange
         Sku sku = mock(Sku.class);
         when(sku.getNameOfProduct()).thenReturn("Apple");
         when(sku.getPrice()).thenReturn(50);
@@ -44,10 +45,10 @@ public class CheckoutServiceTest {
         Offer offer = mock(Offer.class);
         when(offer.getQuantityOfProduct()).thenReturn(3);
         when(offer.getPriceInPence()).thenReturn(130);
+
+        //Act
         repo.getOffers().put(sku.getNameOfProduct(), offer);
 //        when(repo.getOffer(sku.getNameOfProduct())).thenReturn(offer);
-
-
         itemRepo.getAllSkus().put(sku.getNameOfProduct(), sku);
 
         Basket basket = new Basket();
@@ -61,7 +62,8 @@ public class CheckoutServiceTest {
 
         basket.addToBasket(sku2);
         basket.addToBasket(sku2);
-
+        System.out.println(basket.showBasket());
+        //Assert
         Assert.assertEquals(225, checkoutService.checkoutBasket(basket));
     }
 

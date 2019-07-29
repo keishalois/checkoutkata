@@ -35,7 +35,7 @@ public class BasketController {
 
     @GetMapping("/see")
     public ResponseEntity seeBasket(){
-        return ResponseEntity.ok(basket);
+        return ResponseEntity.ok(basket.showBasket());
     }
 
 }
