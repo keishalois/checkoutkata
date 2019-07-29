@@ -2,17 +2,11 @@ package kata.Controller;
 
 import kata.basket.Basket;
 import kata.repo.ItemRepo;
-import kata.sku.Sku;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/basket")
@@ -20,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BasketController {
 
     private Basket basket;
+
     @Lazy
     @Autowired
     public BasketController(Basket basket) {
@@ -34,11 +29,13 @@ public class BasketController {
             basket.addToBasket(itemRepo.getSku(skuName));
             return ResponseEntity.ok(basket);
         } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("SKU %s does not exist", skuName));
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Not able to add SKU %s to basket", skuName));
             }
     }
 
-
-
+    @GetMapping("/see")
+    public ResponseEntity seeBasket(){
+        return ResponseEntity.ok(basket);
+    }
 
 }

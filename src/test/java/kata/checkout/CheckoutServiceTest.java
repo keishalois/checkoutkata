@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 public class CheckoutServiceTest {
 
-    @Mock
+    @InjectMocks
     OfferRepo repo;
 
     @Mock
@@ -31,17 +32,20 @@ public class CheckoutServiceTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
-    public void calcCostOfSingleItemCheckout() {
+    public void calcCostOfItemCheckoutShouldReturnIntOfMixOfOffersAndNonOffersTotal() {
         Sku sku = mock(Sku.class);
         when(sku.getNameOfProduct()).thenReturn("Apple");
         when(sku.getPrice()).thenReturn(50);
+
+        Sku sku2 = mock(Sku.class);
+        when(sku2.getNameOfProduct()).thenReturn("Pear");
+        when(sku2.getPrice()).thenReturn(30);
 
         Offer offer = mock(Offer.class);
         when(offer.getQuantityOfProduct()).thenReturn(3);
         when(offer.getPriceInPence()).thenReturn(130);
         repo.getOffers().put(sku.getNameOfProduct(), offer);
-//        when(repo.getOffers().get(sku.getNameOfProduct())).thenReturn(offer);
-        when(repo.getOffer(sku.getNameOfProduct())).thenReturn(offer);
+//        when(repo.getOffer(sku.getNameOfProduct())).thenReturn(offer);
 
 
         itemRepo.getAllSkus().put(sku.getNameOfProduct(), sku);
@@ -53,9 +57,12 @@ public class CheckoutServiceTest {
         basket.addToBasket(sku);
         basket.addToBasket(sku);
         basket.addToBasket(sku);
+        basket.addToBasket(sku);
 
-//should equal 130 but it isnt applying the offer - offer repo is null... not sure why :(
-        Assert.assertEquals(150, checkoutService.checkoutBasket(basket));
+        basket.addToBasket(sku2);
+        basket.addToBasket(sku2);
+
+        Assert.assertEquals(225, checkoutService.checkoutBasket(basket));
     }
 
 //    @Test

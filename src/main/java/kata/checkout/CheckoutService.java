@@ -9,7 +9,6 @@ import kata.sku.Sku;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -18,21 +17,13 @@ import java.util.Set;
 @Service
 public class CheckoutService {
 
-
     private OfferRepo offerRepo;
-
-    @Value("${username}")
-    private String username;
-
 
     @Autowired
     public CheckoutService(OfferRepo offerRepo) {
-
         this.offerRepo = offerRepo;
         System.out.println("Creating kata.checkout service with these offers " + offerRepo.getOffers().toString());
-        System.out.println(username);
     }
-
 
     public int applyOffers(Offer offer, Sku sku, int basketQuantity) {
         int totalPrice = 0;
