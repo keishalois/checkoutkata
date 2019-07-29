@@ -34,11 +34,11 @@ public class CheckoutService {
     }
 
 
-    public int applyOffers(Offer offer, Sku sku, int basketquantity) {
+    public int applyOffers(Offer offer, Sku sku, int basketQuantity) {
         int totalPrice = 0;
 
-        int offerBundlePrice =  (basketquantity / offer.getQuantityOfProduct()) * offer.getPriceInPence();
-        int remainderItemsPrice = (basketquantity % offer.getQuantityOfProduct()) * sku.getPrice();
+        int offerBundlePrice =  (basketQuantity / offer.getQuantityOfProduct()) * offer.getPriceInPence();
+        int remainderItemsPrice = (basketQuantity % offer.getQuantityOfProduct()) * sku.getPrice();
 
         totalPrice += (offerBundlePrice + remainderItemsPrice);
 

@@ -1,8 +1,13 @@
 package kata.basket;
 
 import kata.sku.Sku;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 
+@Lazy
+@Component
 public class Basket {
 
     private HashMap <Sku, Integer> basketOfItems;

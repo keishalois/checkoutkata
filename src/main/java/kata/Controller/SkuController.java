@@ -18,27 +18,24 @@ public class SkuController {
         this.itemRepo = itemRepo;
     }
 
-    @GetMapping("/{skuid}")
-    public ResponseEntity getSku(@PathVariable String skuid) {
-        if (itemRepo.getSku(skuid) != null) {
-            return ResponseEntity.ok(itemRepo.getSku(skuid));
+    @GetMapping("/{skuId}")
+    public ResponseEntity getSku(@PathVariable String skuId) {
+        if (itemRepo.getSku(skuId) != null) {
+            return ResponseEntity.ok(itemRepo.getSku(skuId));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("SKU %s does not exist", skuid));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("SKU %s does not exist", skuId));
         }
     }
 
     @PostMapping("/post")
     public ItemRepo addNewSku(@RequestParam("skuName") String skuName, @RequestParam("skuPrice") int skuPrice) {
         Sku newSku = new Sku(skuName, skuPrice);
-        String skuid = skuName;
-        itemRepo.getAllSkus().put(skuid, newSku);
+        String skuId = skuName;
+        itemRepo.getAllSkus().put(skuId, newSku);
         return itemRepo;
     }
 
-    @GetMapping("/ping")
-    public String ping(){
-        return "pong";
-    }
+
 }
 
 
