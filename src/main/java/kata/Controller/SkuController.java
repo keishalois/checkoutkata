@@ -1,15 +1,13 @@
 package kata.Controller;
 
-import kata.repo.ItemRepo;
-import kata.sku.Sku;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
+import kata.Model.repo.ItemRepo;
+import kata.Model.sku.Sku;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/sku")
+@RequestMapping("/skus")
 public class SkuController {
 
     private ItemRepo itemRepo;
@@ -28,14 +26,10 @@ public class SkuController {
     }
 
     @PostMapping("/post")
-    public ItemRepo addNewSku(@RequestParam("skuName") String skuName, @RequestParam("skuPrice") int skuPrice) {
-        Sku newSku = new Sku(skuName, skuPrice);
-        String skuId = skuName;
-        itemRepo.getAllSkus().put(skuId, newSku);
-        return itemRepo;
+    public Sku addNewSku(@RequestBody Sku newSku) {
+        itemRepo.addSku(newSku);
+        return newSku;
     }
-
-
 }
 
 
