@@ -8,9 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 
 public class BasketTest {
@@ -18,55 +15,42 @@ public class BasketTest {
     @Test
     public void addSingleItemToBasketShouldReturnSingleItem() {
         //Arrange
-        Sku sku = mock(Sku.class);
-        when(sku.getNameOfProduct()).thenReturn("Apple");
-        when(sku.getPrice()).thenReturn(50);
+        Sku appleSku = new Sku("Apple", 50);
         //Act
-        Basket basketMock = new Basket();
-        basketMock.addToBasket(sku);
-        System.out.println(basketMock.showBasket());
+        Basket basket = new Basket();
+        basket.addToBasket(appleSku);
+        System.out.println(basket.showBasket());
         //Assert
-        Assert.assertEquals(Integer.valueOf(1), basketMock.getBasketOfItems().get(sku));
+        Assert.assertEquals(Integer.valueOf(1), basket.getBasketOfItems().get(appleSku));
     }
 
     @Test
     public void addMultipleItemsOfSameTypeToBasketShouldReturnMoreThanOne() {
         //Arrange
-        Sku sku = mock(Sku.class);
-        when(sku.getNameOfProduct()).thenReturn("Apple");
-        when(sku.getPrice()).thenReturn(50);
-
-        Sku sku2 = mock(Sku.class);
-        when(sku2.getNameOfProduct()).thenReturn("Pear");
-        when(sku2.getPrice()).thenReturn(30);
+        Sku appleSku = new Sku("Apple", 50);
         //Act
         Basket basket2 = new Basket();
-        basket2.addToBasket(sku);
-        basket2.addToBasket(sku);
+        basket2.addToBasket(appleSku);
+        basket2.addToBasket(appleSku);
         System.out.println(basket2.showBasket());
         //Assert
-        Assert.assertEquals(Integer.valueOf(2), basket2.getBasketOfItems().get(sku));
+        Assert.assertEquals(Integer.valueOf(2), basket2.getBasketOfItems().get(appleSku));
         Assert.assertEquals(1, basket2.getBasketOfItems().size());
     }
 
     @Test
     public void addMultipleItemsOfDifferentTypesToBasketShouldReturnMultipleTypes() {
         //Arrange
-        Sku sku = mock(Sku.class);
-        when(sku.getNameOfProduct()).thenReturn("Apple");
-        when(sku.getPrice()).thenReturn(50);
-
-        Sku sku2 = mock(Sku.class);
-        when(sku2.getNameOfProduct()).thenReturn("Pear");
-        when(sku2.getPrice()).thenReturn(30);
+        Sku appleSku = new Sku("Apple", 50);
+        Sku pearSku = new Sku("Pear", 30);
         //Act
         Basket basket2 = new Basket();
-        basket2.addToBasket(sku);
-        basket2.addToBasket(sku2);
+        basket2.addToBasket(appleSku);
+        basket2.addToBasket(pearSku);
         System.out.println(basket2.showBasket());
         //Assert
-        Assert.assertEquals(Integer.valueOf(1), basket2.getBasketOfItems().get(sku));
-        Assert.assertEquals(Integer.valueOf(1), basket2.getBasketOfItems().get(sku2));
+        Assert.assertEquals(Integer.valueOf(1), basket2.getBasketOfItems().get(appleSku));
+        Assert.assertEquals(Integer.valueOf(1), basket2.getBasketOfItems().get(pearSku));
         Assert.assertEquals(2, basket2.getBasketOfItems().size());
     }
 
