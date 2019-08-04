@@ -6,110 +6,113 @@ import kata.Model.repo.ItemRepo;
 import kata.Model.repo.OfferRepo;
 import kata.Model.sku.Sku;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Mockito.mock;
+import java.util.HashMap;
+
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 
 public class CheckoutServiceTest {
 
-    @InjectMocks
+    @Mock
     OfferRepo repo;
 
     @Mock
     ItemRepo itemRepo;
 
+    //this creates the mock offer repo and mock item repo in the test class allowing you to instantiate later
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
+    //test mock item repo works
+    @Test
+    public void itemRepoMockAddsSkusShouldReturnNotNullMockItemRepo() {
+        //Arrange
+        HashMap<String,Sku> skusForItemRepo = new HashMap<>();
+        Basket basket = new Basket();
+        Sku Apple = new Sku("Apple",20);
+        skusForItemRepo.put("Apple", Apple);
+        when(itemRepo.getAllSkus()).thenReturn(skusForItemRepo);
+        when(itemRepo.getSku("Apple")).thenReturn(Apple);
+        Sku appleSku = itemRepo.getSku("Apple");
+        //Act
+        basket.addToBasket(appleSku);
+        basket.addToBasket(appleSku);
+        basket.addToBasket(appleSku);
+        //Assert
+        Assert.assertEquals(skusForItemRepo, itemRepo.getAllSkus());
+        Assert.assertEquals(Apple,appleSku);
+    }
+
+    //test mock offer repo works
+    @Test
+    public void getOffersForItemShouldReturnOffers() {
+        HashMap<String, Offer> offersForOfferRepo = new HashMap<>();
+        Sku appleSku = new Sku("Apple", 50);
+        Offer appleOffer = new Offer(3,130);
+        offersForOfferRepo.put("Apple", appleOffer);
+        when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(appleOffer);
+        Assert.assertEquals(offersForOfferRepo.get(appleSku.getNameOfProduct()).getPriceInPence(), repo.getOffer(appleSku.getNameOfProduct()).getPriceInPence());
+    }
+
+    //test checkout works - this test is still a work in progress as it doesnt process the offers :)
+    @Test
+    public void calcOffersTotalMockShouldReturnIntTotalOffer() {
+        //Arrange
+        HashMap<String,Sku> skusForItemRepo = new HashMap<>();
+        HashMap<String, Offer> offersForOfferRepo = new HashMap<>();
+        Sku appleSku = new Sku("Apple", 50);
+        Offer appleOffer = new Offer(3,130);
+
+        Basket basket = new Basket();
+        skusForItemRepo.put("Apple", appleSku);
+        offersForOfferRepo.put("Apple", appleOffer);
+        //instantiate offer repo mock when create checkout
+        when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(appleOffer);
+        CheckoutService checkoutService = new CheckoutService(repo);
+        when(itemRepo.getAllSkus()).thenReturn(skusForItemRepo);
+        when(itemRepo.getSku("Apple")).thenReturn(appleSku);
+        //Act
+        basket.addToBasket(appleSku);
+        basket.addToBasket(appleSku);
+        basket.addToBasket(appleSku);
+        //Assert
+        Assert.assertEquals(130, checkoutService.checkoutBasket(basket));
+    }
+
+    //this test still needs rewriting to use mock repos
     @Test
     public void calcCostOfItemCheckoutShouldReturnIntOfMixOfOffersAndNonOffersTotal() {
         //Arrange
-        Sku sku = mock(Sku.class);
-        when(sku.getNameOfProduct()).thenReturn("Apple");
-        when(sku.getPrice()).thenReturn(50);
-
-        Sku sku2 = mock(Sku.class);
-        when(sku2.getNameOfProduct()).thenReturn("Pear");
-        when(sku2.getPrice()).thenReturn(30);
-
-        Offer offer = mock(Offer.class);
-        when(offer.getQuantityOfProduct()).thenReturn(3);
-        when(offer.getPriceInPence()).thenReturn(130);
-
-        //Act
-        repo.getOffers().put(sku.getNameOfProduct(), offer);
-//        when(repo.getOffer(sku.getNameOfProduct())).thenReturn(offer);
-        itemRepo.getAllSkus().put(sku.getNameOfProduct(), sku);
-
         Basket basket = new Basket();
 
         kata.Model.checkout.CheckoutService checkoutService = new kata.Model.checkout.CheckoutService(repo);
 
-        basket.addToBasket(sku);
-        basket.addToBasket(sku);
-        basket.addToBasket(sku);
-        basket.addToBasket(sku);
+        //Act
 
-        basket.addToBasket(sku2);
-        basket.addToBasket(sku2);
+        basket.addToBasket(itemRepo.getSku("Apple"));
+        basket.addToBasket(itemRepo.getSku("Apple"));
+        basket.addToBasket(itemRepo.getSku("Apple"));
+        basket.addToBasket(itemRepo.getSku("Apple"));
+
+        basket.addToBasket(itemRepo.getSku("Pear"));
+        basket.addToBasket(itemRepo.getSku("Pear"));
+
         System.out.println(basket.showBasket());
         //Assert
         Assert.assertEquals(225, checkoutService.checkoutBasket(basket));
     }
 
-//    @Test
-//    public void calcCostsWithDealsAppliedAndIndividualItemsReturnsIntTotalPrice() {
-////        OfferRepo repo = new OfferRepo();
-////        ItemRepo itemRepo = new ItemRepo();
-//        Offer offer = mock(Offer.class);
-//        when(offer.getQuantityOfProduct()).thenReturn(3);
-//        when(offer.getPriceInPence()).thenReturn(50);
-//
-//        Sku sku = mock(Sku.class);
-//        Basket basket = new Basket();
-//        kata.Model.checkout.CheckoutService checkoutService = new kata.Model.checkout.CheckoutService(repo);
-//        //      Apple offers: 3 for 130p;
-//        //      Pear offers: 2 for 45p;
-////        final Sku Apple = new Sku("Apple",50);
-////        final Sku Pear = new Sku("Pear",30);
-////        final Sku Gin = new Sku("Gin", 1000 );
-//
-//        //Act
-//        basket.addToBasket(itemRepo.getSku("Apple"));
-//        basket.addToBasket(itemRepo.getSku("Apple"));
-//        basket.addToBasket(itemRepo.getSku("Apple"));
-////        basket.addToBasket(Apple);
-////        basket.addToBasket(Apple);
-////        basket.addToBasket(Apple);
-//        //deal applied so cost of 3 apples = 130p
-//        basket.addToBasket(itemRepo.getSku("Apple"));
-//        basket.addToBasket(itemRepo.getSku("Apple"));
-//
-////        basket.addToBasket(Apple);
-////        basket.addToBasket(Apple);
-//        // cost of 2 apples = 100p
-//        basket.addToBasket(itemRepo.getSku("Pear"));
-//        basket.addToBasket(itemRepo.getSku("Pear"));
-//
-////        basket.addToBasket(Pear);
-////        basket.addToBasket(Pear);
-//        // deal applied so cost of 2 pears = 45p
-//        basket.addToBasket(itemRepo.getSku("Gin"));
-//
-////        basket.addToBasket(Gin);
-//        // no deals for gin so cost = 1000p
-//
-//        //Assert
-//        Assert.assertEquals(1275, checkoutService.checkoutBasket(basket));
-//    }
 }
