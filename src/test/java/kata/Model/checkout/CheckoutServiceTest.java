@@ -54,17 +54,23 @@ public class CheckoutServiceTest {
         //Assert
         Assert.assertEquals(skusForItemRepo, itemRepo.getAllSkus());
         Assert.assertEquals(Apple,appleSku);
+        verify(itemRepo).getAllSkus();
+        verify(itemRepo).getSku("Apple");
     }
 
     //test mock offer repo works
     @Test
     public void getOffersForItemShouldReturnOffers() {
+        //Arrange
         HashMap<String, Offer> offersForOfferRepo = new HashMap<>();
         Sku appleSku = new Sku("Apple", 50);
         Offer appleOffer = new Offer(3,130);
+        //Act
         offersForOfferRepo.put("Apple", appleOffer);
         when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(appleOffer);
+        //Assert
         Assert.assertEquals(offersForOfferRepo.get(appleSku.getNameOfProduct()).getPriceInPence(), repo.getOffer(appleSku.getNameOfProduct()).getPriceInPence());
+        verify(repo).getOffer(appleSku.getNameOfProduct());
     }
 
     //test checkout works - this test is still a work in progress as it doesnt process the offers :)
@@ -80,8 +86,8 @@ public class CheckoutServiceTest {
         skusForItemRepo.put("Apple", appleSku);
         offersForOfferRepo.put("Apple", appleOffer);
         //instantiate offer repo mock when create checkout
-        when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(appleOffer);
         CheckoutService checkoutService = new CheckoutService(repo);
+        when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(appleOffer);
         when(itemRepo.getAllSkus()).thenReturn(skusForItemRepo);
         when(itemRepo.getSku("Apple")).thenReturn(appleSku);
         //Act
