@@ -1,11 +1,15 @@
 package kata.Controller;
 
-import kata.Model.basket.Basket;
-import kata.Model.repo.ItemRepo;
+import com.fasterxml.jackson.databind.node.TextNode;
+import kata.Model.Basket;
+import kata.Repository.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @RestController
 @RequestMapping("/basket")
@@ -21,12 +25,12 @@ public class BasketController {
         this.basket = basket;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity addItemToBasket(@RequestParam("item") String skuName) {
+    @PostMapping()
+    public ResponseEntity addItemToBasket(@RequestBody String skuName) throws URISyntaxException {
 
         if (skuName != null && itemRepo.getAllSkus().containsKey(skuName)) {
             basket.addToBasket(itemRepo.getSku(skuName));
-            return ResponseEntity.ok(basket);
+            return ResponseEntity.created(new URI("basket/see")).body(basket);
         } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Not able to add SKU %s to basket", skuName));
             }

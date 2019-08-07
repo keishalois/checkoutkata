@@ -1,7 +1,7 @@
 package kata.Controller;
 
-import kata.Model.basket.Basket;
-import kata.Model.checkout.CheckoutService;
+import kata.Model.Basket;
+import kata.Service.CheckoutService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

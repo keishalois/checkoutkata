@@ -1,6 +1,6 @@
 package kata;
 
-import kata.Model.basket.Basket;
+import kata.Model.Basket;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
@@ -13,7 +13,7 @@ public class Config {
 //    }
 //
     @Bean
-    public kata.Model.basket.Basket basket(){
+    public Basket basket(){
         return new Basket();
     }
 
