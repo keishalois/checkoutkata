@@ -50,7 +50,8 @@ public class SkuControllerTest {
         when(itemRepo.addSku(appleSku)).thenReturn(appleSku);
 
         ObjectMapper mapper = new ObjectMapper();
-        MvcResult mvcResult = this.mockMvc.perform(post("/skus").contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(appleSku))).andReturn();
+        String jsonString = mapper.writeValueAsString(appleSku);
+        MvcResult mvcResult = this.mockMvc.perform(post("/skus").contentType(MediaType.APPLICATION_JSON).content(jsonString)).andReturn();
 
         Assert.assertThat(mvcResult.getResponse().getStatus(), is(201));
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains("\"nameOfProduct\":\"Apple\""));

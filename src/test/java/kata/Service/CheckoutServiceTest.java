@@ -1,6 +1,9 @@
-package kata.Model;
+package kata.Service;
 
 
+import kata.Model.Basket;
+import kata.Model.Offer;
+import kata.Model.Sku;
 import kata.Repository.OfferRepo;
 import kata.Service.CheckoutService;
 import org.junit.Assert;

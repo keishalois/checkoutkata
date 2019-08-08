@@ -18,12 +18,13 @@ public class Basket {
         return basketOfItems;
     }
 
-    public void addToBasket(Sku sku) {
+    public Sku addToBasket(Sku sku) {
         if (basketOfItems.containsKey(sku)) {
             basketOfItems.put(sku, basketOfItems.get(sku) + 1);
         } else {
             basketOfItems.put(sku, 1);
         }
+        return sku;
     }
 
     public int getQuantityInBasket(Sku sku) {
