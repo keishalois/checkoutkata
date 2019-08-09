@@ -35,10 +35,8 @@ public class CheckoutService {
     public int checkoutBasket(Basket basket) {
         int totalPrice = 0;
         Set<Sku> skus = basket.getBasketOfItems().keySet();
-
         for (Sku sku : skus) {
             Optional<Offer> optOffer = offerRepo.getOffer(sku.getNameOfProduct());
-
             if (optOffer.isPresent()) {
                 totalPrice += applyOffers(optOffer.get(), sku, basket.getQuantityInBasket(sku));
             } else {

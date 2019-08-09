@@ -1,6 +1,5 @@
 package kata.Model;
 
-import kata.Model.Sku;
 import org.junit.Assert;
 import org.junit.Test;
 

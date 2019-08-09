@@ -21,7 +21,13 @@ public class OfferRepo {
     }
 
     public Optional<Offer> getOffer(String name) {
-        return Optional.of(offers.get(name));
+        Optional<Offer> optionalOffer = Optional.empty();
+
+        if (getOffers().containsKey(name)){
+            return Optional.of(offers.get(name));
+        } else {
+        return optionalOffer;
+        }
     }
 
 }
