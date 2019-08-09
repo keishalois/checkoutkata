@@ -3,8 +3,7 @@ package kata.Controller;
 import kata.Model.Basket;
 import kata.Model.Sku;
 import kata.Repository.ItemRepo;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,9 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringRunner.class)
 @WebMvcTest(BasketController.class)
 
-
-// ******* this test does not work yet *****
-
 public class BasketControllerTest {
 
     @MockBean
@@ -35,25 +31,44 @@ public class BasketControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+
+    @Before
+    public void before() {
+        System.out.println("Before");
+    }
+    @After
+    public void after() {
+        System.out.println("After");
+    }
+    @BeforeClass
+    public static void beforeClass() {
+        System.out.println("Before Class");
+    }
+    @AfterClass
+    public static void afterClass() {
+        System.out.println("After Class");
+    }
+
     @Test
-    public void addItemToBasketShouldPostItem() throws Exception {
+    public void addItemToBasketShouldPostItemToBasket() throws Exception {
+        System.out.println("Test1");
         Sku appleSku = new Sku("Apple", 50);
         when(itemRepo.getSku("Apple")).thenReturn(appleSku);
         when(basket.addToBasket(appleSku)).thenReturn(appleSku);
 
-//        ObjectMapper mapper = new ObjectMapper();
-//        String jsonString = mapper.writeValueAsString(appleSku.getNameOfProduct());
-
-//        MvcResult mvcResult = this.mockMvc.perform(put("/basket/add/Apple").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonString)).andReturn();
         MvcResult mvcResult = this.mockMvc.perform(put("/basket/add/Apple")).andReturn();
 
         Assert.assertThat(mvcResult.getResponse().getStatus(), is(200));
-        verify(basket).addToBasket(appleSku);
+        String jsonBasketString = "{\"Basket of items \": " + basket + "}";
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonBasketString));
     }
 
     @Test
-    public void seeBasketShouldReturnBasket() throws Exception {
+    public void seeBasketShouldReturnBasketOfItems() throws Exception {
+        System.out.println("Test2");
         MvcResult mvcResult = this.mockMvc.perform(get("/basket/see")).andReturn();
+        String jsonBasketString = "{\"Basket of items \": " + basket + "}";
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonBasketString));
         Assert.assertThat(mvcResult.getResponse().getStatus(), is(200));
     }
 
