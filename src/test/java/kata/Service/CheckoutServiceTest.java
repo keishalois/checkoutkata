@@ -5,7 +5,6 @@ import kata.Model.Basket;
 import kata.Model.Offer;
 import kata.Model.Sku;
 import kata.Repository.OfferRepo;
-import kata.Service.CheckoutService;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +14,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.MockitoRule;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
@@ -41,9 +39,7 @@ public class CheckoutServiceTest {
         basket.addToBasket(appleSku);
         basket.addToBasket(appleSku);
 
-        HashMap<String, Offer> offersForOfferRepo = new HashMap<>();
         Offer appleOffer = new Offer(3,130);
-        offersForOfferRepo.put("Apple", appleOffer);
         CheckoutService checkoutService = new CheckoutService(repo);
         when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(Optional.of(appleOffer));
 
@@ -63,9 +59,7 @@ public class CheckoutServiceTest {
         basket.addToBasket(appleSku);
         basket.addToBasket(appleSku);
 
-        HashMap<String, Offer> offersForOfferRepo = new HashMap<>();
         Offer appleOffer = new Offer(3,130);
-        offersForOfferRepo.put("Apple", appleOffer);
         CheckoutService checkoutService = new CheckoutService(repo);
         when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(Optional.of(appleOffer));
         //Act
@@ -88,9 +82,7 @@ public class CheckoutServiceTest {
         basket.addToBasket(appleSku);
         basket.addToBasket(appleSku);
 
-        HashMap<String, Offer> offersForOfferRepo = new HashMap<>();
         Offer appleOffer = new Offer(3,130);
-        offersForOfferRepo.put("Apple", appleOffer);
         CheckoutService checkoutService = new CheckoutService(repo);
         when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(Optional.of(appleOffer));
 
@@ -130,9 +122,7 @@ public class CheckoutServiceTest {
         basket.addToBasket(appleSku);
         basket.addToBasket(ginSku);
 
-        HashMap<String, Offer> offersForOfferRepo = new HashMap<>();
         Offer appleOffer = new Offer(3,130);
-        offersForOfferRepo.put("Apple", appleOffer);
 
         CheckoutService checkoutService = new CheckoutService(repo);
         when(repo.getOffer(appleSku.getNameOfProduct())).thenReturn(Optional.of(appleOffer));
