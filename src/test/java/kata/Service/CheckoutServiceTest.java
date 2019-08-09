@@ -5,9 +5,7 @@ import kata.Model.Basket;
 import kata.Model.Offer;
 import kata.Model.Sku;
 import kata.Repository.OfferRepo;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -29,8 +27,26 @@ public class CheckoutServiceTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
+    @Before
+    public void before() {
+        System.out.println("Before");
+    }
+    @After
+    public void after() {
+        System.out.println("After");
+    }
+    @BeforeClass
+    public static void beforeClass() {
+        System.out.println("Before Class");
+    }
+    @AfterClass
+    public static void afterClass() {
+        System.out.println("After Class");
+    }
+
     @Test
     public void calcBasketTotalShouldApplyOfferWhenOfferExists() {
+        System.out.println("Test1");
         //Arrange
         Basket basket = new Basket();
         Sku appleSku = new Sku("Apple", 50);
@@ -52,6 +68,8 @@ public class CheckoutServiceTest {
 
     @Test
     public void calcBasketTotalWhenItemOnOfferDoesNotQualifyForDiscountShouldNotApplyOffer(){
+        System.out.println("Test2");
+
         //Arrange
         Basket basket = new Basket();
         Sku appleSku = new Sku("Apple", 50);
@@ -73,6 +91,8 @@ public class CheckoutServiceTest {
 
     @Test
     public void calcBasketTotalWhenItemHasOfferPlusExtraShouldReturnMixedPricing(){
+        System.out.println("Test3");
+
         //Arrange
         Basket basket = new Basket();
         Sku appleSku = new Sku("Apple", 50);
@@ -95,6 +115,8 @@ public class CheckoutServiceTest {
 
     @Test
     public void calcBasketTotalWhenItemHasNoOffersShouldReturnItemPrice() {
+        System.out.println("Test4");
+
         //Arrange
         Basket basket = new Basket();
         Sku ginSku = new Sku("Gin", 1000);
@@ -111,6 +133,8 @@ public class CheckoutServiceTest {
 
     @Test
     public void calcBasketTotalWhenMixOfOfferItemsAndNonOfferItems(){
+        System.out.println("Test5");
+
         //Arrange
         Basket basket = new Basket();
         Sku appleSku = new Sku("Apple", 50);

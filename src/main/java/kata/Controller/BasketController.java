@@ -27,7 +27,7 @@ public class BasketController {
         Sku sku = itemRepo.getSku(skuName);
         if (skuName != null && sku != null) {
             basket.addToBasket(sku);
-            String jsonBasketString = "{\"Basket of items \": " + basket + "}";
+            String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
             return ResponseEntity.ok(jsonBasketString);
         } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format("Not able to add SKU %s to basket", skuName));
@@ -36,7 +36,15 @@ public class BasketController {
 
     @GetMapping("/see")
     public ResponseEntity seeBasket(){
-        String jsonBasketString = "{\"Basket of items \": " + basket + "}";
+        String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
+        return ResponseEntity.ok(jsonBasketString);
+    }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity deleteBasket(){
+        System.out.println(basket.getBasketOfItems());
+        basket.deleteItemsFromBasket();
+        String jsonBasketString = "{\"Basket of items is no more \": " + basket.getBasketOfItems() + "}";
         return ResponseEntity.ok(jsonBasketString);
     }
 

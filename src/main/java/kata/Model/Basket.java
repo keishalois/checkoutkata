@@ -44,4 +44,9 @@ public class Basket {
         return skus;
     }
 
+    public void deleteItemsFromBasket() {
+        basketOfItems.clear();
+        System.out.println("all items removed from basket");
+    }
+
 }

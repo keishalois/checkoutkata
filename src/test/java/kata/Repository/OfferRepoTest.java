@@ -1,9 +1,7 @@
 package kata.Repository;
 
 import kata.Model.Offer;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -21,9 +19,27 @@ public class OfferRepoTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock
     OfferRepo offerRepo;
+    @Before
+    public void before() {
+        System.out.println("Before");
+    }
+    @After
+    public void after() {
+        System.out.println("After");
+    }
+    @BeforeClass
+    public static void beforeClass() {
+        System.out.println("Before Class");
+    }
+    @AfterClass
+    public static void afterClass() {
+        System.out.println("After Class");
+    }
 
     @Test
     public void getExistingOfferShouldReturnOptionalOfferIfExists() {
+        System.out.println("Test1");
+
         Offer appleOffer = new Offer(3,130);
 
         when(offerRepo.getOffer("Apple")).thenReturn(Optional.of(appleOffer));
@@ -35,6 +51,8 @@ public class OfferRepoTest {
 
     @Test
     public void checkOfferDoesNotExistAndReturnEmptyOptional() {
+        System.out.println("Test2");
+
         when(offerRepo.getOffer("Gin")).thenReturn(Optional.empty());
         Optional<Offer> optionalOffer = offerRepo.getOffer("Gin");
 

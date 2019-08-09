@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
 @RunWith(SpringRunner.class)
@@ -59,7 +58,7 @@ public class BasketControllerTest {
         MvcResult mvcResult = this.mockMvc.perform(put("/basket/add/Apple")).andReturn();
 
         Assert.assertThat(mvcResult.getResponse().getStatus(), is(200));
-        String jsonBasketString = "{\"Basket of items \": " + basket + "}";
+        String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonBasketString));
     }
 
@@ -67,9 +66,26 @@ public class BasketControllerTest {
     public void seeBasketShouldReturnBasketOfItems() throws Exception {
         System.out.println("Test2");
         MvcResult mvcResult = this.mockMvc.perform(get("/basket/see")).andReturn();
-        String jsonBasketString = "{\"Basket of items \": " + basket + "}";
+        String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonBasketString));
         Assert.assertThat(mvcResult.getResponse().getStatus(), is(200));
+    }
+
+    @Test
+    public void addRandomItemThatDoesNotExistToBasketShouldReturnWrongRequest() throws Exception {
+        System.out.println("Test3");
+        MvcResult mvcResult = this.mockMvc.perform(put("/basket/add/Car")).andReturn();
+        //400 is bad request error
+        Assert.assertThat(mvcResult.getResponse().getStatus(),is(400));
+    }
+
+    @Test
+    public void removeAllItemsFromBasketShouldReturnEmptyBasket() throws Exception {
+        System.out.println("Test4");
+        MvcResult mvcResult = this.mockMvc.perform(delete("/basket/remove")).andReturn();
+        Assert.assertThat(mvcResult.getResponse().getStatus(), is(200));
+        String jsonBasketString = "{\"Basket of items is no more \": " + basket.getBasketOfItems() + "}";
+        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonBasketString));
     }
 
 
