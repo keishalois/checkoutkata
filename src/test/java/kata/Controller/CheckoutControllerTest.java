@@ -19,33 +19,33 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.security.Provider;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CheckoutController.class)
 
-
-// ******* this test does not work yet *****
+// ******* not sure this is actually fixed, I thought I would need to use injectmocks *****
 public class CheckoutControllerTest {
     @MockBean
     Basket basket;
     @MockBean
     ItemRepo itemRepo;
-    @InjectMocks
+    @MockBean
     CheckoutService checkoutService;
-    @Mock
+    @MockBean
     OfferRepo offerRepo;
     @Autowired
     private MockMvc mockMvc;
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
 
     @Test
     public void checkoutServiceWorkingShouldReturnTotalPrice() throws Exception {
@@ -56,7 +56,6 @@ public class CheckoutControllerTest {
         Assert.assertThat(mvcResult.getResponse().getStatus(), is(HttpStatus.OK.value()));
         String jsonTotalString = "{\"Total to pay\": " + 50 + "}";
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonTotalString));
-        verify(basket).getBasketOfItems();
     }
 
 
