@@ -27,12 +27,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public class CheckoutControllerTest {
     @MockBean
     Basket basket;
-//    @MockBean
-//    ItemRepo itemRepo;
     @MockBean
     CheckoutService checkoutService;
-//    @MockBean
-//    OfferRepo offerRepo;
     @Autowired
     private MockMvc mockMvc;
 
