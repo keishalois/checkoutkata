@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/checkout")
 public class CheckoutController {
     private Basket basket;
-    @Autowired
     private CheckoutService checkoutService;
 
 
@@ -26,6 +25,7 @@ public class CheckoutController {
     public ResponseEntity checkoutAndPay() {
         int checkout = checkoutService.checkoutBasket(basket);
         String jsonTotalString = "{\"Total to pay\": " + checkout + "}";
+        basket.deleteItemsFromBasket();
         return ResponseEntity.ok(jsonTotalString);
     }
 

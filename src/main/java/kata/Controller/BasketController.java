@@ -25,7 +25,7 @@ public class BasketController {
     @PutMapping("/add/{skuName}")
     public ResponseEntity addItemToBasket(@PathVariable String skuName) {
         Sku sku = itemRepo.getSku(skuName);
-        if (skuName != null && sku != null) {
+        if (sku != null) {
             basket.addToBasket(sku);
             String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
             return ResponseEntity.ok(jsonBasketString);
@@ -34,7 +34,7 @@ public class BasketController {
             }
     }
 
-    @GetMapping("/see")
+    @GetMapping()
     public ResponseEntity seeBasket(){
         String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
         return ResponseEntity.ok(jsonBasketString);
@@ -45,7 +45,7 @@ public class BasketController {
         System.out.println(basket.getBasketOfItems());
         basket.deleteItemsFromBasket();
         String jsonBasketString = "{\"Basket of items is no more \": " + basket.getBasketOfItems() + "}";
-        return ResponseEntity.ok(jsonBasketString);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("Removed basket"));
     }
 
 }

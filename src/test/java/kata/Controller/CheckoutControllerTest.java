@@ -23,7 +23,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringRunner.class)
 @WebMvcTest(CheckoutController.class)
 
-// ******* not sure this is actually fixed, I thought I would need to use injectmocks *****
 public class CheckoutControllerTest {
     @MockBean
     Basket basket;

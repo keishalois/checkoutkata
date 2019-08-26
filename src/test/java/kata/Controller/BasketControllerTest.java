@@ -64,7 +64,7 @@ public class BasketControllerTest {
     @Test
     public void seeBasketShouldReturnBasketOfItems() throws Exception {
         System.out.println("Test2");
-        MvcResult mvcResult = this.mockMvc.perform(get("/basket/see")).andReturn();
+        MvcResult mvcResult = this.mockMvc.perform(get("/basket")).andReturn();
         String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
         Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonBasketString));
         Assert.assertThat(mvcResult.getResponse().getStatus(), is(200));
@@ -82,9 +82,7 @@ public class BasketControllerTest {
     public void removeAllItemsFromBasketShouldReturnEmptyBasket() throws Exception {
         System.out.println("Test4");
         MvcResult mvcResult = this.mockMvc.perform(delete("/basket/remove")).andReturn();
-        Assert.assertThat(mvcResult.getResponse().getStatus(), is(200));
-        String jsonBasketString = "{\"Basket of items is no more \": " + basket.getBasketOfItems() + "}";
-        Assert.assertTrue(mvcResult.getResponse().getContentAsString().contains(jsonBasketString));
+        Assert.assertThat(mvcResult.getResponse().getStatus(), is(204));
     }
 
 
