@@ -1,7 +1,8 @@
 package kata.Controller;
 
-import kata.Model.basket.Basket;
-import kata.Model.repo.ItemRepo;
+import kata.Model.Basket;
+import kata.Model.Sku;
+import kata.Repository.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +22,30 @@ public class BasketController {
         this.basket = basket;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity addItemToBasket(@RequestParam("item") String skuName) {
-
-        if (skuName != null && itemRepo.getAllSkus().containsKey(skuName)) {
-            basket.addToBasket(itemRepo.getSku(skuName));
-            return ResponseEntity.ok(basket);
+    @PutMapping("/add/{skuName}")
+    public ResponseEntity addItemToBasket(@PathVariable String skuName) {
+        Sku sku = itemRepo.getSku(skuName);
+        if (sku != null) {
+            basket.addToBasket(sku);
+            String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
+            return ResponseEntity.ok(jsonBasketString);
         } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format("Not able to add SKU %s to basket", skuName));
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(String.format("Not able to add SKU %s to basket", skuName));
             }
     }
 
-    @GetMapping("/see")
+    @GetMapping()
     public ResponseEntity seeBasket(){
-        return ResponseEntity.ok(basket);
+        String jsonBasketString = "{\"Basket of items \": " + basket.getBasketOfItems() + "}";
+        return ResponseEntity.ok(jsonBasketString);
+    }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity deleteBasket(){
+        System.out.println(basket.getBasketOfItems());
+        basket.deleteItemsFromBasket();
+        String jsonBasketString = "{\"Basket of items is no more \": " + basket.getBasketOfItems() + "}";
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(String.format("Removed basket"));
     }
 
 }

@@ -1,29 +1,19 @@
 package kata;
 
-import kata.Model.basket.Basket;
-import org.springframework.beans.factory.annotation.Value;
+import kata.Model.Basket;
+import kata.Repository.OfferRepo;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-//@Configuration
+@Configuration
 public class Config {
 
-//    @Bean
-//    public ItemRepo itemRepoA(){
-//        return new ItemRepo();
-//    }
-//
     @Bean
-    public kata.Model.basket.Basket basket(){
+    public Basket basket(){
         return new Basket();
     }
 
-    private String username;
+    @Bean
+    public OfferRepo offerRepo() { return new OfferRepo();}
 
-    public Config(@Value("${username}") String username){
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
-    }
 }
